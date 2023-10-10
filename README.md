@@ -16,7 +16,7 @@
 
 * 本程序仅支持LNMP环境，其它环境未测试，建议安装使用linux宝塔。（MYSQL5.7 + PHP7.4 + REDIS）
 * 安装：将网站目录上传到web，然后在宝塔面板中绑定好cdn域名，域名建议使用从100开始的后缀，如：f100或cdn100，数字递增，第二台服务器就是f101或cdn101，依次类推。
-* 然后是修改/file_gd_cdn/config/app.php配置文件，网站配置文件：/file_gd/config/app.php
+* 然后修改/file_gd_cdn/config/app.php配置文件
 ~~~
 
 ...
