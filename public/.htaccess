@@ -1,0 +1,5 @@
+#new 注意伪静态顺序不能错乱
+#20230708 File uploader cdn
+rewrite "^/upload$" /index.php/upload/index last;
+rewrite "^/download/(\w+)$" /index.php/file/download?file_hash=$1 last;
+rewrite "^/delete_file$" /index.php/api/delete_file last;

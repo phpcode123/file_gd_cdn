@@ -1,0 +1,194 @@
+<div class="container-xl">
+  <div class="row justify-content-center">
+    <div class="col-xl-8 col-md-12  mt-5 mb-3">
+      <ul class="list-inline list-inline-dots mb-0 text-center">
+        <li class="list-inline-item"><a href="/contact" class="link-secondary">Contact us</a></li>
+        <li class="list-inline-item"><a href="/report" class="link-secondary">Report</a></li>
+        <li class="list-inline-item"><a href="/report" class="link-secondary">FAQ</a></li>
+        <li class="list-inline-item"><a href="/report" class="link-secondary">About</a></li>
+        <li class="list-inline-item"><a href="/report" class="link-secondary">Privacy Policy</a></li>
+
+      </ul>
+    </div>
+
+  </div>
+
+
+</div>
+
+
+
+<!-- The template to display files available for upload -->
+<script id="template-upload" type="text/x-tmpl">
+
+            {% for (var i=0, file; file=o.files[i]; i++) { %}
+            <tr class="template-upload">
+            <td>
+            <p class="name">{%=file.name%}</p>
+            <strong class="error text-danger"></strong>
+            </td>
+            <td class="width20p">
+            <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div class="progress-bar progress-bar-success" style="width:0%;"></div>
+            </div>
+            </td>
+            <td class="text-center width20p">
+            {% if (!i && !o.options.autoUpload) { %}
+            <button class="start btn btn-primary hide" disabled>
+            <i class="glyphicon glyphicon-upload"></i>
+            <span>Start</span>
+            </button>
+            {% } %}
+            {% if (!i) { %}
+            <span class="cancel pointer"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+              <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+            </svg></span>
+            {% } %}
+            </td>
+            </tr>
+            {% } %}
+        
+    </script>
+<!-- The template to display files available for download -->
+<script id="template-download" type="text/x-tmpl">
+
+            {% for (var i=0, file; file=o.files[i]; i++) { %}
+            <tr class="template-download fade">
+            <td>
+            <p class="name">{%=file.name%}</p>
+            </td>
+            <td class="text-center width20p">
+        
+        Ready
+        
+            </td>
+            <td class="text-center width20p">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+              </svg>
+            </td>
+            </tr>
+            {% } %}
+        
+    </script>
+
+<script>
+
+
+
+  var uploadserver = null;
+  // $.ajax({
+  //   url: '/api/file/getUploadServer',
+  //   type: "GET",
+  //   dataType: "json",
+  //   triggerLoadingMask: false
+  // }).always(function (response, textStatus, xhr) {
+  //   uploadserver = response.data.server;
+  // });
+  var uploadserver = "https://f83.workupload.com/api/file/upload";
+
+  var uploadComplete = false;
+  var count = 0;
+  $(function () {
+    'use strict';
+
+    $('#fileupload').fileupload({
+      // xhrFields: {withCredentials: true},
+      url: 'none',
+      limitConcurrentUploads: 1,
+      forceIframeTransport: false,
+      autoUpload: true,
+      triggerLoadingMask: false,
+      add: function (e, data) {
+        if (e.isDefaultPrevented()) {
+          return false;
+        }
+
+        var $this = $(this),
+          that = $this.data('blueimp-fileupload') ||
+            $this.data('fileupload'),
+          options = that.options;
+        data.context = that._renderUpload(data.files)
+          .data('data', data)
+          .addClass('processing');
+        options.filesContainer[
+          options.prependFiles ? 'prepend' : 'append'
+        ](data.context);
+        that._forceReflow(data.context);
+        that._transition(data.context);
+        data.process(function () {
+          return $this.fileupload('process', data);
+        }).always(function () {
+          data.context.each(function (index) {
+            $(this).find('.size').text(
+              that._formatFileSize(data.files[index].size)
+            );
+          }).removeClass('processing');
+          that._renderPreviews(data);
+        }).done(function () {
+
+          uploadComplete = true;
+          count++;
+
+          data.context.find('.start').prop('disabled', false);
+          if ((that._trigger('added', e, data) !== false) &&
+            (options.autoUpload || data.autoUpload) &&
+            data.autoUpload !== false) {
+
+            // get upload server and submit
+            /*
+            getUploadServer(function(uploadServer){
+                options.url = uploadServer;
+                data.submit();
+            });
+            */
+
+            setTimeout(function () {
+              options.url = uploadserver;
+              data.submit();
+            }, count * 1000);
+
+            /* 
+            options.url = uploadserver;
+            data.submit();
+            */
+          }
+        }).fail(function () {
+          if (data.files.error) {
+            data.context.each(function (index) {
+              var error = data.files[index].error;
+              if (error) {
+                $(this).find('.error').text(error);
+              }
+            });
+          }
+        });
+      }
+    });
+
+    $('#fileupload').bind('fileuploadprogressall', function (e, data) {
+      $("#uploadBtn").attr("disabled", "disabled");
+
+      // show global loading title
+      var percent = Math.round((100 / data.total) * data.loaded);
+      document.title = percent + '% uploaded';
+
+      if (!$('#hiddenMenu').is(':visible')) {
+        $('#hiddenMenu').slideDown('slow');
+      }
+    });
+
+    $('#fileupload').bind('fileuploadstop', function (e, data) {
+      $("#uploadBtn").removeAttr("disabled");
+    });
+
+  });
+
+
+
+</script>
+
+
+</body>
+
+</html>
