@@ -55,14 +55,5 @@
 
 
 
-## 版本更新说明
-
-[请查看UPDATE.md](https://github.com/PHPCODE123/file_gd_cdn/blob/master/UPDATE.md "UPDATE.md")
-
-
-
-
-
-
 ## 
 [FILE_GD主站程序](https://github.com/PHPCODE123/file_gd "FILE_GD")
