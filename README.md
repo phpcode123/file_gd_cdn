@@ -49,9 +49,9 @@
 * 伪静态文件目录(只做了Nginx适配)：/file_gd_cdn/public/.htaccess  内容复制宝塔配置里即可
 * 后台地址：无后台，使用/public/adminer.php用来简易查看下数据库即可
 
-* 再在file_gd(自己的主站)后台 服务器》添加服务器  将当前cdn的域名添加到后台中
+* 再在file_gd(自己的主站)后台 服务器 》添加服务器 ，将当前cdn的域名添加到后台中
 
-## 其它问题
+
 
 
 
@@ -64,4 +64,5 @@
 
 
 
-## CDN端请查看FILE_GD_CDN项目的配置教程
+## 
+[FILE_GD主站程序](https://github.com/PHPCODE123/file_gd "FILE_GD")
