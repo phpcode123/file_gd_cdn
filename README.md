@@ -4,7 +4,6 @@
 
    FILE_GD_CDN是FILE_GD的上传文件接管服务，CDN服务器支持无限拓展。
 
-   QQ:12391046  E-Mail：petersonjames5838@gmail.com
 
 ## 技术相关
 
